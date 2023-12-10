@@ -116,6 +116,52 @@ wstring parse(const wstring& input) {
     return result;
 }
 
+//-------------------------------FOR ONE LETTER------------------------
+
+void output_frequency(const map<wchar_t, size_t>& letter_counter) {
+    for (const auto& p : letter_counter) {
+        wcout << L"letter: " << p.first << L" consized: " << p.second << endl;
+    }
+}
+
+auto letter_frequency(wstring input) {
+    map <wchar_t, size_t> let_counter;
+    for (const auto& c : input) {
+        ++let_counter[c];
+    }
+
+    output_frequency(let_counter);
+    return let_counter;
+}
+
+double letter_probability(double text_size, double letter_count)
+{
+    return letter_count / text_size;
+}
+
+double entropy_term(double probability)
+{
+    return probability * log2(probability);
+}
+
+double letter_entrop(const wstring& input)
+{
+    auto parsed_input = parse(input);
+    auto text_size = parsed_input.size();
+    auto letters_count = letter_frequency(parsed_input);
+    double result = 0;
+
+    for (const auto& pair_let_count : letters_count)
+    {
+        auto probability = letter_probability(text_size, pair_let_count.second);
+        result += entropy_term(probability);
+    }
+
+    result *= -1;
+
+    return result;
+}
+
 int main()
 {
     setlocale(LC_ALL, "");
@@ -126,7 +172,7 @@ int main()
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     wstring input;
     string line;
-    std::ifstream fin("./Toreadory_z_Vasiukivky..txt");
+    std::ifstream fin("./Toreadory_z_Vasiukivky.txt");
     while (getline(fin, line, '\n') && !line.empty())
     {
         input += converter.from_bytes(line);
@@ -135,5 +181,7 @@ int main()
 
     input = parse(input);
     wcout << input << endl;
+
+    wcout << letter_entrop(input) << std::endl;
 }
 
