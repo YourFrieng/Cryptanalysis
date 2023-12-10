@@ -162,6 +162,53 @@ double letter_entrop(const wstring& input)
     return result;
 }
 
+//-------------------------------FOR BIGRAMS------------------------
+void output_bigram(const map<wstring, size_t>& bidram_counter) {
+    for (const auto& p : bidram_counter) {
+        wcout << L"Bigram: " << p.first << L" consized " << p.second << endl;
+    }
+}
+
+auto bigram_count(wstring input) {
+    map <wstring, size_t> bigram_counter;
+    for (int i = 0; i < input.length() - 1; i++) {
+
+        ++bigram_counter[input.substr(i, 2)];
+    }
+    output_bigram(bigram_counter);
+    return bigram_counter;
+}
+
+double bigram_sum(const map<wstring, size_t>& bigrams)
+{
+    size_t dick = 0;
+    for (const auto& bigram : bigrams)
+    {
+        dick += bigram.second;
+    }
+
+    return dick;
+}
+
+double bigram_entrop(const wstring& input)
+{
+    auto parsed_input = parse(input);
+    auto bigrams_count = bigram_count(parsed_input);
+    auto all_bigrams = bigram_sum(bigrams_count);
+    double result = 0;
+
+    for (const auto& pair_bigram_count : bigrams_count)
+    {
+        auto probability = letter_probability(all_bigrams, pair_bigram_count.second);
+        result += entropy_term(probability);
+    }
+
+    result *= -1;
+
+    return result;
+}
+
+
 int main()
 {
     setlocale(LC_ALL, "");
@@ -181,7 +228,12 @@ int main()
 
     input = parse(input);
     wcout << input << endl;
+    //letter_frequency(input);
+    //bigram_count(input);
 
     wcout << letter_entrop(input) << std::endl;
+    auto entropia_bigrams = bigram_entrop(input);
+    wcout << entropia_bigrams << std::endl;
+    wcout << "Result: " << entropia_bigrams / 2 << std::endl;
 }
 
