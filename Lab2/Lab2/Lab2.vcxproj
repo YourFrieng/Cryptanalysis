@@ -128,7 +128,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnalyseText.cpp" />
+    <ClCompile Include="Criterias.cpp" />
+    <ClCompile Include="Distortion.cpp" />
+    <ClCompile Include="GeneralInfo.cpp" />
     <ClCompile Include="Lab2.cpp" />
+    <ClCompile Include="ReadingText.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnalyseText.h" />
+    <ClInclude Include="Distortion.h" />
+    <ClInclude Include="GeneralInfo.h" />
+    <ClInclude Include="ReadingText.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
