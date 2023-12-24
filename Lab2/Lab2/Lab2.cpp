@@ -3,6 +3,7 @@
 #include "GeneralInfo.h"
 #include "AnalyseText.h"
 #include "ReadingText.h"
+#include "Criterias.h"
 
 int main()
 {

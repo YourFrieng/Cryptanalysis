@@ -30,3 +30,6 @@ std::vector<std::wstring> generate_all_bigrams_on_alphabet();
 double bigram_compliance_index(const std::map<std::wstring, size_t>& bigrams_count, size_t text_size);
 
 double lgram_compliance_index(const std::map<std::wstring, size_t>& lgrams_count, size_t text_size, size_t l);
+
+//-----------------------------WRAPPERS----------------------------------
+std::map<std::wstring, size_t> CreateUniformFrequency(const std::wstring& input, size_t l);

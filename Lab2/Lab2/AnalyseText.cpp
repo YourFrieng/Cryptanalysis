@@ -164,3 +164,22 @@ double lgram_compliance_index(const std::map<std::wstring, size_t>& lgrams_count
 
     return 0;
 }
+
+std::map<std::wstring, size_t> CreateUniformFrequency(const std::wstring& input, size_t l)
+{
+    std::map<std::wstring, size_t> uniform_frequency;
+    switch (l)
+    {
+    case 1:
+        for (const auto& letter_freq_pair : letter_frequency(input))
+            uniform_frequency[std::wstring({ letter_freq_pair.first })] = letter_freq_pair.second;
+        break;
+    case 2:
+        uniform_frequency = bigram_count(input);
+        break;
+    default:
+        break;
+    }
+
+    return uniform_frequency;
+}

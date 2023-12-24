@@ -1,31 +1,10 @@
+#include "Criterias.h"
 #include "GeneralInfo.h"
 #include "AnalyseText.h"
 #include <cmath>
-
-enum HYPOTHESIS
-{
-	H_0,// informative text
-	H_1 // random text
-};
-
-std::map<std::wstring, size_t> CreateUniformFrequency(const std::wstring& input, size_t l)
-{
-	std::map<std::wstring, size_t> uniform_frequency;
-	switch (l)
-	{
-	case 1:
-		for (const auto& letter_freq_pair : letter_frequency(input))
-			uniform_frequency[std::wstring({ letter_freq_pair.first })] = letter_freq_pair.second;
-		break;
-	case 2:
-		uniform_frequency = bigram_count(input);
-		break;
-	default:
-		break;
-	}
-
-	return uniform_frequency;
-}
+#include <sstream>
+#define LZMA_API_STATIC
+#include <lzma.h>
 
 /*****************************************************************//**
  * Criterion 2.0
@@ -147,4 +126,53 @@ HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::map<std::ws
 		return H_1;
 
 	return H_0;
+}
+
+/*****************************************************************//**
+ * Structure criterion 
+ *********************************************************************/
+std::wstring compressInput(const std::wstring& input)
+{
+	size_t inputSize = input.size();
+	size_t bufferSize = 1024;
+	size_t compressedSize = 0;
+	lzma_ret ret;
+
+
+	// Creating struct for compression
+	lzma_stream strm = LZMA_STREAM_INIT;
+
+	ret = lzma_easy_encoder(&strm, LZMA_PRESET_DEFAULT, LZMA_CHECK_CRC64);
+	if (ret != LZMA_OK)
+		throw "Error in encoder initializing";
+
+	// Setting input buffer
+	strm.next_in = reinterpret_cast<const uint8_t*>(input.c_str());
+	strm.avail_in = inputSize;
+
+	// Initialize buffer where will be compressed data
+	std::vector<uint8_t> outputBuffer(bufferSize);
+	strm.next_out = outputBuffer.data();
+	strm.avail_out = bufferSize;
+
+	// Data comprassion
+	ret = lzma_code(&strm, LZMA_FINISH);
+	if (ret != LZMA_STREAM_END) 
+	{
+		lzma_end(&strm);
+		throw "Error in comprassion";
+	}
+
+	// Get size of compressed data
+	compressedSize = strm.total_out;
+
+	std::wstringstream wss;
+	for (size_t i = 0; i < compressedSize; ++i) {
+		wss << std::hex << static_cast<int>(outputBuffer[i]);
+	}
+
+	//End of work
+	lzma_end(&strm);
+
+	return wss.str();
 }
