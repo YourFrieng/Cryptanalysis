@@ -1,0 +1,12 @@
+TEST 1
+Norm text compression: 0,21
+Generated compression: 0,30
+
+
+TEST 2
+Norm text compression: 0.22
+Generated compression: 0.30
+
+TEST 3
+Norm text compression: 0.24
+Generated compression: 0.32

@@ -11,4 +11,6 @@ std::wstring parse(const std::wstring& input);
 //-------------------------GETTING TEXTS IN UKRAINIAN----------------
 std::vector<std::wstring> GetLNTextsByFullText(const std::wstring& full_text, size_t L, size_t N);
 
+std::wstring GenerateText(size_t text_len);
+
 std::wstring ReadUkrTextFromFile(std::string path);

@@ -15,8 +15,10 @@ std::map <wchar_t, size_t> letter_frequency(const std::wstring& input) {
     for (const auto& c : input) {
         ++let_counter[c];
     }
-
+#ifdef _OUTPUT_ADDITIONAL_INFO
     output_frequency(let_counter);
+#endif // _OUTPUT_ADDITIONAL_INFO
+
     return let_counter;
 }
 
@@ -78,7 +80,9 @@ std::map <std::wstring, size_t> bigram_count(const std::wstring& input) {
 
         ++bigram_counter[input.substr(i, 2)];
     }
+#ifdef _OUTPUT_ADDITIONAL_INFO
     output_bigram(bigram_counter);
+#endif // OUTPUT_ADDITIONAL_INFO
     return bigram_counter;
 }
 

@@ -40,4 +40,4 @@ HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::map<std::ws
 /*****************************************************************//**
  * Structure criterion
  *********************************************************************/
-std::wstring compressInput(const std::wstring& input);
+HYPOTHESIS criterionStructure(const std::wstring& input, float comprassion_coef);

@@ -3,6 +3,8 @@
 #include <sstream>
 #include <codecvt>
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 std::wstring delete_rubish(const std::wstring& input)
 {
@@ -66,6 +68,17 @@ std::vector<std::wstring> GetLNTextsByFullText(const std::wstring& full_text, si
     return n_texts;
 }
 
+std::wstring GenerateText(size_t text_len)
+{
+    std::wstring generatedText;
+    generatedText.reserve(text_len);
+    std::srand(std::time(nullptr)); // use current time as seed for random generator
+    for (size_t i = 0; i < text_len; i++)
+        generatedText.push_back(alphabet[std::rand() % alphabet.size()]);
+
+    return generatedText;
+}
+
 std::wstring ReadUkrTextFromFile(std::string path)
 {
     setlocale(LC_ALL, "");
@@ -77,7 +90,7 @@ std::wstring ReadUkrTextFromFile(std::string path)
     std::wstring input;
     std::string line;
     std::ifstream fin(path);
-    while (std::getline(fin, line, '\n') && !line.empty())
+    while (std::getline(fin, line, '\n')/* && !line.empty()*/)
     {
         input += converter.from_bytes(line);
     }

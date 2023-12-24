@@ -2,7 +2,6 @@
 #include "GeneralInfo.h"
 #include "AnalyseText.h"
 #include <cmath>
-#include <sstream>
 #define LZMA_API_STATIC
 #include <lzma.h>
 
@@ -134,7 +133,7 @@ HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::map<std::ws
 std::wstring compressInput(const std::wstring& input)
 {
 	size_t inputSize = input.size();
-	size_t bufferSize = 1024;
+	size_t bufferSize = input.size();
 	size_t compressedSize = 0;
 	lzma_ret ret;
 
@@ -166,13 +165,28 @@ std::wstring compressInput(const std::wstring& input)
 	// Get size of compressed data
 	compressedSize = strm.total_out;
 
-	std::wstringstream wss;
-	for (size_t i = 0; i < compressedSize; ++i) {
-		wss << std::hex << static_cast<int>(outputBuffer[i]);
-	}
+	std::wstring compressedData(reinterpret_cast<wchar_t*>(outputBuffer.data()), strm.total_out);
 
 	//End of work
 	lzma_end(&strm);
 
-	return wss.str();
+	return compressedData;
+}
+
+/**
+ * Compress text and calculate "compression coefficient"(compressed_size / original_size).
+ * Check if calculated "compression coefficient" smaller then maximal - 'comprassion_coef'
+ * 
+ * @param input - text which we want to check
+ * @param comprassion_coef - the ratio of the compressed size to the original size (compressed_size / original_size)
+ * @return is text informative
+ */
+HYPOTHESIS criterionStructure(const std::wstring& input, float comprassion_coef)
+{
+	auto compressed_input = compressInput(input);
+	float calc_comp_coef = static_cast<float>(compressed_input.size()) / static_cast<float>(input.size());
+	if (calc_comp_coef < comprassion_coef)
+		return H_0;
+
+	return H_1;
 }

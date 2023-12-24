@@ -106,7 +106,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NO_OUTPUT_ADDITIONAL_INFO;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>LibLZMA;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalyseText.h" />
+    <ClInclude Include="Criterias.h" />
     <ClInclude Include="Distortion.h" />
     <ClInclude Include="GeneralInfo.h" />
     <ClInclude Include="ReadingText.h" />
