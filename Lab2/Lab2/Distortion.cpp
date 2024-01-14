@@ -38,6 +38,11 @@ size_t gcd(size_t a, size_t b) {
 
 std::wstring cipherAfin(const std::wstring& input, size_t a, size_t b, size_t l)
 {
+    std::vector<std::wstring> all_bigrams;
+    if (l == 2)
+    {
+        all_bigrams = generate_all_bigrams_on_alphabet();
+    }
     ///distort text
     std::wstring cipher_text;
     cipher_text.reserve(input.size());
@@ -47,12 +52,16 @@ std::wstring cipherAfin(const std::wstring& input, size_t a, size_t b, size_t l)
     {
         size_t l_copy = l + 1;
         size_t x_i = 0;
-        while (l_copy >= 0)
+        while (l_copy > 0)
         {
             x_i = charNumbInAlph(input[i]) * std::pow(m, --l_copy);
         }
 
-        cipher_text.push_back((a * x_i + b) % m_pow_l);
+        if (l == 1)
+            cipher_text.push_back(alphabet[(a * x_i + b) % m_pow_l]);
+        else
+            cipher_text += all_bigrams[(a * x_i + b) % m_pow_l];
+        
     }
 
     return cipher_text;

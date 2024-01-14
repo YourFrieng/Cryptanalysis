@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <vector>
 
 enum HYPOTHESIS
 {
@@ -11,12 +12,12 @@ enum HYPOTHESIS
 /*****************************************************************//**
  * Criterion 2.0
  *********************************************************************/
-HYPOTHESIS criterionFrequentLgrams0(const std::wstring& input, const std::map<std::wstring, size_t>& A_frq, size_t l);
+HYPOTHESIS criterionFrequentLgrams0(const std::wstring& input, const std::vector<std::wstring>& A_frq, size_t l);
 
 /*****************************************************************//**
  * Criterion 2.1
  *********************************************************************/
-HYPOTHESIS criterionFrequentLgrams1(const std::wstring& input, const std::map<std::wstring, size_t>& A_frq, size_t l, size_t k_f);
+HYPOTHESIS criterionFrequentLgrams1(const std::wstring& input, const std::vector<std::wstring>& A_frq, size_t l, size_t k_f);
 
 /*****************************************************************//**
  * Criterion 2.2
@@ -35,7 +36,7 @@ HYPOTHESIS criterionConformityIndex(const std::wstring& input, double I_l/*compl
 /*****************************************************************//**
  * Criterion 5.0
  *********************************************************************/
-HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::map<std::wstring, size_t>& lang_rare_lgrams, double k_empt, size_t l);
+HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::vector<std::wstring>& lang_rare_lgrams, size_t k_empt, size_t l);
 
 /*****************************************************************//**
  * Structure criterion

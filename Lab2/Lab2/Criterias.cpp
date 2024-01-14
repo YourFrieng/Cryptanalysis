@@ -8,13 +8,13 @@
 /*****************************************************************//**
  * Criterion 2.0
  *********************************************************************/
-HYPOTHESIS criterionFrequentLgrams0(const std::wstring& input, const std::map<std::wstring, size_t>& A_frq, size_t l)
+HYPOTHESIS criterionFrequentLgrams0(const std::wstring& input, const std::vector<std::wstring>& A_frq, size_t l)
 {
 	auto uniform_frq = CreateUniformFrequency(input, l);
 
 	for (const auto& frq_pair : A_frq)
 	{
-		auto it_freq = uniform_frq.find(frq_pair.first);
+		auto it_freq = uniform_frq.find(frq_pair);
 		if (it_freq == uniform_frq.end())
 			return H_1;
 	}
@@ -25,7 +25,7 @@ HYPOTHESIS criterionFrequentLgrams0(const std::wstring& input, const std::map<st
 /*****************************************************************//**
  * Criterion 2.1
  *********************************************************************/
-HYPOTHESIS criterionFrequentLgrams1(const std::wstring& input, const std::map<std::wstring, size_t>& A_frq, size_t l, size_t k_f)
+HYPOTHESIS criterionFrequentLgrams1(const std::wstring& input, const std::vector<std::wstring>& A_frq, size_t l, size_t k_f)
 {
 	auto uniform_frq = CreateUniformFrequency(input, l);
 
@@ -33,7 +33,7 @@ HYPOTHESIS criterionFrequentLgrams1(const std::wstring& input, const std::map<st
 	A_af.reserve(A_frq.size());
 	for (const auto& frq_pair : A_frq)
 	{
-		auto it_freq = uniform_frq.find(frq_pair.first);
+		auto it_freq = uniform_frq.find(frq_pair);
 		if (it_freq != uniform_frq.end())
 			A_af.push_back(it_freq->first);
 	}
@@ -107,17 +107,17 @@ HYPOTHESIS criterionConformityIndex(const std::wstring& input, double I_l/*compl
 /*****************************************************************//**
  * Criterion 5.0
  *********************************************************************/
-HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::map<std::wstring, size_t>& lang_rare_lgrams, double k_empt, size_t l)
+HYPOTHESIS criterionEmptyBoxes(const std::wstring& input, const std::vector<std::wstring>& lang_rare_lgrams, size_t k_empt, size_t l)
 {
 	std::map<std::wstring, size_t> boxes;
 	auto uniform_frq = CreateUniformFrequency(input, l);
 	for (const auto& lgram : lang_rare_lgrams)
 	{
-		auto it_frq = uniform_frq.find(lgram.first);
+		auto it_frq = uniform_frq.find(lgram);
 		if (it_frq != uniform_frq.end())
-			boxes[lgram.first] = it_frq->second;
+			boxes[lgram] = it_frq->second;
 		else
-			boxes[lgram.first] = 0;
+			boxes[lgram] = 0;
 	}
 
 	size_t count_of_empty_boxes = std::count_if(boxes.begin(), boxes.end(), [](const auto& p) { return p.second; });
@@ -156,7 +156,7 @@ std::wstring compressInput(const std::wstring& input)
 
 	// Data comprassion
 	ret = lzma_code(&strm, LZMA_FINISH);
-	if (ret != LZMA_STREAM_END) 
+	if ((ret != LZMA_STREAM_END) && (ret != LZMA_OK))
 	{
 		lzma_end(&strm);
 		throw "Error in comprassion";
